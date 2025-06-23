@@ -34,13 +34,21 @@ class APIClient {
     this.baseUrl = baseUrl;
   }
 
-  private async makeRequest<T>(
+  private  async makeRequest<T>(
     endpoint: string,
     options: RequestInit = {}
   ): Promise<APIResponse<T>> {
     try {
       // Get session for authentication
       const session = await getSession();
+
+      // For internal endpoints, require authentication
+      if (endpoint.startsWith("/api/internal") && !session?.user?.email) {
+        return {
+          success: false,
+          error: "Authentication required for internal endpoints",
+        };
+      }
 
       const url = `${this.baseUrl}${endpoint}`;
       const config: RequestInit = {
@@ -55,6 +63,14 @@ class APIClient {
       };
 
       const response = await fetch(url, config);
+
+      // Check if response is a redirect to signin (indicates not authenticated)
+      if (response.url && response.url.includes("/api/auth/signin")) {
+        return {
+          success: false,
+          error: "Authentication required - redirected to signin",
+        };
+      }
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

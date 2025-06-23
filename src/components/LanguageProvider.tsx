@@ -85,24 +85,30 @@ export function LanguageProvider({
   };
 
   const setLanguage = async (lang: Language) => {
+    console.log(`🔄 Setting language to: ${lang}`);
+    console.log(`📊 Session status: ${status}`);
+    console.log(`👤 Session user:`, session?.user);
+    
     setLanguageState(lang);
     localStorage.setItem("language", lang);
     await loadMessages(lang);
 
-    // Only try to update user profile if user is authenticated, session is loaded, and we have a user
-    if (status === "authenticated" && session?.user && session.user.email) {
+    // NEVER call API unless we're absolutely sure the user is authenticated
+    if (status === "authenticated" && session?.user?.email) {
+      console.log(`✅ User is authenticated, attempting to save to profile...`);
       try {
-        await apiClient.updateCurrentUser({ language: lang });
-        console.log(`Language preference saved to profile: ${lang}`);
+        const result = await apiClient.updateCurrentUser({ language: lang });
+        if (result.success) {
+          console.log(`✅ Language preference saved to profile: ${lang}`);
+        } else {
+          console.warn(`⚠️ API returned error:`, result.error);
+        }
       } catch (error) {
-        console.warn(
-          "Failed to save language preference to user profile:",
-          error
-        );
+        console.warn("⚠️ Failed to save language preference to user profile:", error);
         // Don't throw error - language switching should still work locally
       }
     } else {
-      console.log(`Language preference saved locally: ${lang} (status: ${status})`);
+      console.log(`💾 Language preference saved locally only: ${lang} (status: ${status})`);
     }
   };
 
@@ -111,19 +117,28 @@ export function LanguageProvider({
     const initializeLanguage = async () => {
       let initialLang: Language = "en";
 
+      console.log(`🏁 Initializing language - Status: ${status}`);
+      console.log(`👤 Session:`, session);
+
       // Only check user language if session is fully loaded and user is authenticated
       const userWithLanguage = session?.user as UserWithLanguage;
       if (status === "authenticated" && session?.user && userWithLanguage?.language) {
+        console.log(`👤 Using user's saved language: ${userWithLanguage.language}`);
         // User is authenticated and has a saved language preference
         initialLang = userWithLanguage.language;
       } else if (status !== "loading") {
         // Session is loaded (either authenticated or not), check localStorage and browser
         const savedLang = localStorage.getItem("language") as Language;
         if (savedLang && ["en", "ko", "ja"].includes(savedLang)) {
+          console.log(`💾 Using saved language: ${savedLang}`);
           initialLang = savedLang;
         } else {
-          initialLang = detectBrowserLanguage();
+          const browserLang = detectBrowserLanguage();
+          console.log(`🌐 Using browser language: ${browserLang}`);
+          initialLang = browserLang;
         }
+      } else {
+        console.log(`⏳ Session still loading, using default language`);
       }
 
       setLanguageState(initialLang);
