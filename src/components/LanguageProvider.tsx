@@ -93,22 +93,36 @@ export function LanguageProvider({
     localStorage.setItem("language", lang);
     await loadMessages(lang);
 
-    // ONLY save to profile if user is definitely authenticated and has an email
-    if (status === "authenticated" && session?.user?.email && session.user.email.trim() !== "") {
-      console.log(`✅ User is authenticated with email: ${session.user.email}, saving to profile...`);
+    // ABSOLUTELY NO API CALLS unless user is authenticated with a valid session
+    // This prevents any network requests that could cause "Failed to fetch" errors
+    if (
+      status === "authenticated" && 
+      session?.user?.email && 
+      session.user.email.trim() !== "" &&
+      session.expires && 
+      new Date(session.expires) > new Date()
+    ) {
+      console.log(`✅ User is fully authenticated, saving language to profile...`);
+      
+      // Wrap in additional try-catch to prevent any network errors from bubbling up
       try {
         const result = await apiClient.updateCurrentUser({ language: lang });
-        if (result.success) {
+        
+        if (result && result.success) {
           console.log(`✅ Language preference saved to profile: ${lang}`);
         } else {
-          console.warn(`⚠️ API returned error:`, result.error);
+          console.warn(`⚠️ API returned error:`, result?.error || 'Unknown error');
         }
       } catch (error) {
         console.warn("⚠️ Failed to save language preference to user profile:", error);
-        // Don't throw error - language switching should still work locally
+        // Absolutely do not throw or propagate this error
+        // Language switching should always work locally
       }
     } else {
-      console.log(`💾 Language preference saved locally only: ${lang} (status: ${status}, email: ${session?.user?.email || 'none'})`);
+      console.log(`💾 Language saved locally only: ${lang}`);
+      console.log(`   Status: ${status}`);
+      console.log(`   Email: ${session?.user?.email || 'none'}`);
+      console.log(`   Expires: ${session?.expires || 'none'}`);
     }
   };
 

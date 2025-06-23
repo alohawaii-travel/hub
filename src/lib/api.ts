@@ -98,6 +98,16 @@ class APIClient {
   }
 
   async updateCurrentUser(userData: Partial<UserData>) {
+    // Double-check: Don't even attempt the request if no session exists
+    const session = await getSession();
+    if (!session?.user?.email) {
+      console.log("🚫 No valid session found, skipping user update");
+      return {
+        success: false,
+        error: "No valid session found",
+      };
+    }
+    
     return this.makeRequest<UserData>("/api/internal/users/me", {
       method: "PUT",
       body: JSON.stringify(userData),
