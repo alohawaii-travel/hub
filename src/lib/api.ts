@@ -60,6 +60,7 @@ class APIClient {
       const config: RequestInit = {
         headers: {
           "Content-Type": "application/json",
+          "X-API-Key": process.env.NEXT_PUBLIC_API_KEY || process.env.API_KEY || "",
           ...(session?.user?.email && {
             Authorization: `Bearer ${session.user.email}`,
           }),

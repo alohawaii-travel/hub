@@ -101,8 +101,13 @@ export function LanguageProvider({
     console.log(`   Session expires: ${session?.expires}`);
     console.log(`   Expires is future: ${session?.expires ? new Date(session.expires) > new Date() : false}`);
 
-    // TEMPORARILY DISABLE API CALLS - Still debugging connection issues
-    const shouldCallAPI = false; // TODO: Re-enable once authentication flow is stable
+    // Save to user profile if authenticated
+    const shouldCallAPI = 
+      status === "authenticated" && 
+      session?.user?.email && 
+      session.user.email.trim() !== "" &&
+      session?.expires &&
+      new Date(session.expires) > new Date();
     
     if (shouldCallAPI) {
       console.log(`💾 Saving language preference to user profile: ${lang}`);
