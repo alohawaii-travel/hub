@@ -1,30 +1,6 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
-export default function Home() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status === "loading") return; // Still loading
-
-    if (session) {
-      router.push("/dashboard");
-    } else {
-      router.push("/auth/signin");
-    }
-  }, [session, status, router]);
-
-  // Show simple loading while redirecting
-  return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-        <p className="text-gray-600">Redirecting...</p>
-      </div>
-    </div>
-  );
+export default function RootPage() {
+  // Redirect to signin page since this is a staff-only application
+  redirect("/auth/signin");
 }

@@ -13,6 +13,7 @@ type UserData = {
   email?: string;
   image?: string;
   role?: string;
+  language?: string;
 };
 
 type TourData = {

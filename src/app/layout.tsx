@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
+import { LanguageProvider } from "@/components/LanguageProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,17 +19,34 @@ export const metadata: Metadata = {
   description: "Staff management dashboard for AlohaWaii tours",
 };
 
-export default function RootLayout({
+// Load default English messages
+async function getMessages() {
+  try {
+    const messages = (await import("../../messages/en.json")).default;
+    return messages;
+  } catch (error) {
+    console.error("Failed to load default messages:", error);
+    return {};
+  }
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const messages = await getMessages();
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          <LanguageProvider initialMessages={messages}>
+            {children}
+          </LanguageProvider>
+        </Providers>
       </body>
     </html>
   );

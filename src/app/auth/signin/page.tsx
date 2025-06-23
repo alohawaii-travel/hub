@@ -3,10 +3,13 @@
 import { signIn, getSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     // Check if user is already signed in
@@ -29,13 +32,18 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+      {/* Language Switcher */}
+      <div className="absolute top-4 right-4">
+        <LanguageSwitcher />
+      </div>
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900">
-            Staff Hub Login
+            {t("auth.staffHubLogin")}
           </h2>
           <p className="mt-2 text-sm text-gray-600">
-            Sign in with your authorized Google account
+            {t("auth.signInWithGoogle")}
           </p>
         </div>
       </div>
@@ -89,15 +97,15 @@ export default function SignIn() {
                   />
                 </svg>
               )}
-              Sign in with Google
+              {t("auth.signInWithGoogle")}
             </button>
           </div>
 
           <div className="mt-6">
             <div className="text-xs text-gray-500 text-center">
-              Only authorized staff members can access this system.
+              {t("auth.authorizedStaffOnly")}
               <br />
-              Contact your administrator if you need access.
+              {t("auth.contactAdministrator")}
             </div>
           </div>
         </div>

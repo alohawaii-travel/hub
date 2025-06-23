@@ -4,11 +4,14 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { LoadingPage } from "@/components/LoadingSpinner";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const t = useTranslations();
 
   useEffect(() => {
     if (status === "loading") return; // Still loading
@@ -34,11 +37,12 @@ export default function Dashboard() {
           <div className="flex justify-between items-center py-6">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">
-                AlohaWaii Staff Hub
+                🌺 {t("dashboard.title")}
               </h1>
-              <p className="text-sm text-gray-600">Tour management dashboard</p>
+              <p className="text-sm text-gray-600">{t("dashboard.subtitle")}</p>
             </div>
             <div className="flex items-center space-x-4">
+              <LanguageSwitcher />
               <div className="flex items-center space-x-2">
                 {session.user?.image && (
                   <Image
@@ -57,7 +61,7 @@ export default function Dashboard() {
                 onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                 className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
               >
-                Sign Out
+                {t("common.signOut")}
               </button>
             </div>
           </div>
@@ -92,7 +96,7 @@ export default function Dashboard() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Welcome Back
+                        {t("dashboard.welcomeBack")}
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
                         {session.user?.name}
@@ -133,10 +137,10 @@ export default function Dashboard() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Tours Management
+                        {t("tours.management")}
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        Coming Soon
+                        {t("common.comingSoon")}
                       </dd>
                     </dl>
                   </div>
@@ -168,10 +172,10 @@ export default function Dashboard() {
                   <div className="ml-5 w-0 flex-1">
                     <dl>
                       <dt className="text-sm font-medium text-gray-500 truncate">
-                        Reservations
+                        {t("bookings.reservations")}
                       </dt>
                       <dd className="text-lg font-medium text-gray-900">
-                        Coming Soon
+                        {t("common.comingSoon")}
                       </dd>
                     </dl>
                   </div>
@@ -185,37 +189,39 @@ export default function Dashboard() {
             <div className="bg-white shadow rounded-lg">
               <div className="px-4 py-5 sm:p-6">
                 <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  Quick Actions
+                  {t("dashboard.quickActions")}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <button className="bg-blue-50 border border-blue-200 rounded-md p-4 text-left hover:bg-blue-100 transition-colors">
                     <div className="text-blue-600 font-medium">
-                      Add New Tour
+                      {t("tours.addNewTour")}
                     </div>
                     <div className="text-sm text-blue-500">
-                      Create a new tour package
+                      {t("tours.createTourPackage")}
                     </div>
                   </button>
                   <button className="bg-green-50 border border-green-200 rounded-md p-4 text-left hover:bg-green-100 transition-colors">
                     <div className="text-green-600 font-medium">
-                      View Bookings
+                      {t("bookings.viewBookings")}
                     </div>
                     <div className="text-sm text-green-500">
-                      Check recent reservations
+                      {t("bookings.checkRecentReservations")}
                     </div>
                   </button>
                   <button className="bg-yellow-50 border border-yellow-200 rounded-md p-4 text-left hover:bg-yellow-100 transition-colors">
                     <div className="text-yellow-600 font-medium">
-                      User Management
+                      {t("dashboard.userManagement")}
                     </div>
                     <div className="text-sm text-yellow-500">
-                      Manage staff access
+                      {t("dashboard.manageStaffAccess")}
                     </div>
                   </button>
                   <button className="bg-purple-50 border border-purple-200 rounded-md p-4 text-left hover:bg-purple-100 transition-colors">
-                    <div className="text-purple-600 font-medium">Reports</div>
+                    <div className="text-purple-600 font-medium">
+                      {t("dashboard.reports")}
+                    </div>
                     <div className="text-sm text-purple-500">
-                      View analytics
+                      {t("dashboard.viewAnalytics")}
                     </div>
                   </button>
                 </div>

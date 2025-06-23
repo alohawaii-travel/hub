@@ -1,0 +1,82 @@
+{
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signInWithGoogle": "Sign in with Google",
+    "staffHubLogin": "AlohaWaii Staff Hub",
+    "authorizedStaffOnly": "Authorized Staff Only",
+    "contactAdministrator": "Contact your administrator for access",
+    "welcome": "Welcome to AlohaWaii Hub",
+    "accessDenied": "Access Denied",
+    "unauthorizedDomain": "Your email domain is not authorized to access this system.",
+    "loading": "Redirecting..."
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "tours": "Tours",
+    "bookings": "Bookings",
+    "customers": "Customers",
+    "settings": "Settings",
+    "reports": "Reports"
+  },
+  "dashboard": {
+    "title": "Staff Dashboard",
+    "subtitle": "Manage tours, bookings, and customer relationships",
+    "welcomeBack": "Welcome Back",
+    "quickActions": "Quick Actions",
+    "quickStats": "Quick Statistics",
+    "recentActivity": "Recent Activity",
+    "upcomingTours": "Upcoming Tours",
+    "pendingBookings": "Pending Bookings",
+    "userManagement": "User Management",
+    "manageStaffAccess": "Manage Staff Access",
+    "reports": "Reports",
+    "viewAnalytics": "View Analytics"
+  },
+  "tours": {
+    "title": "Tour Management",
+    "management": "Tours Management",
+    "addTour": "Add New Tour",
+    "addNewTour": "Add New Tour",
+    "createTourPackage": "Create Tour Package",
+    "editTour": "Edit Tour",
+    "deleteTour": "Delete Tour",
+    "tourName": "Tour Name",
+    "description": "Description",
+    "price": "Price",
+    "duration": "Duration",
+    "capacity": "Capacity",
+    "status": "Status"
+  },
+  "bookings": {
+    "title": "Booking Management",
+    "reservations": "Reservations",
+    "newBooking": "New Booking",
+    "viewBookings": "View Bookings",
+    "checkRecentReservations": "Check Recent Reservations",
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "cancelled": "Cancelled",
+    "customerName": "Customer Name",
+    "tourDate": "Tour Date",
+    "participants": "Participants",
+    "totalAmount": "Total Amount"
+  },
+  "common": {
+    "loading": "Loading...",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "filter": "Filter",
+    "export": "Export",
+    "actions": "Actions",
+    "status": "Status",
+    "date": "Date",
+    "total": "Total",
+    "signOut": "Sign Out",
+    "comingSoon": "Coming Soon"
+  }
+}

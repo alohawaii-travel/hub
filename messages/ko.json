@@ -1,0 +1,82 @@
+{
+  "auth": {
+    "signIn": "로그인",
+    "signOut": "로그아웃",
+    "signInWithGoogle": "Google로 로그인",
+    "staffHubLogin": "알로하와이 직원 허브",
+    "authorizedStaffOnly": "승인된 직원만",
+    "contactAdministrator": "접근을 위해 관리자에게 문의하세요",
+    "welcome": "알로하와이 허브에 오신 것을 환영합니다",
+    "accessDenied": "접근 거부",
+    "unauthorizedDomain": "귀하의 이메일 도메인은 이 시스템에 접근할 권한이 없습니다.",
+    "loading": "리다이렉트 중..."
+  },
+  "navigation": {
+    "dashboard": "대시보드",
+    "tours": "투어",
+    "bookings": "예약",
+    "customers": "고객",
+    "settings": "설정",
+    "reports": "보고서"
+  },
+  "dashboard": {
+    "title": "직원 대시보드",
+    "subtitle": "투어, 예약 및 고객 관계 관리",
+    "welcomeBack": "돌아오신 것을 환영합니다",
+    "quickActions": "빠른 작업",
+    "quickStats": "빠른 통계",
+    "recentActivity": "최근 활동",
+    "upcomingTours": "예정된 투어",
+    "pendingBookings": "대기 중인 예약",
+    "userManagement": "사용자 관리",
+    "manageStaffAccess": "직원 접근 관리",
+    "reports": "보고서",
+    "viewAnalytics": "분석 보기"
+  },
+  "tours": {
+    "title": "투어 관리",
+    "management": "투어 관리",
+    "addTour": "새 투어 추가",
+    "addNewTour": "새 투어 추가",
+    "createTourPackage": "투어 패키지 생성",
+    "editTour": "투어 편집",
+    "deleteTour": "투어 삭제",
+    "tourName": "투어 이름",
+    "description": "설명",
+    "price": "가격",
+    "duration": "소요 시간",
+    "capacity": "수용 인원",
+    "status": "상태"
+  },
+  "bookings": {
+    "title": "예약 관리",
+    "reservations": "예약",
+    "newBooking": "새 예약",
+    "viewBookings": "예약 보기",
+    "checkRecentReservations": "최근 예약 확인",
+    "confirmed": "확정",
+    "pending": "대기 중",
+    "cancelled": "취소됨",
+    "customerName": "고객 이름",
+    "tourDate": "투어 날짜",
+    "participants": "참가자",
+    "totalAmount": "총액"
+  },
+  "common": {
+    "loading": "로딩 중...",
+    "save": "저장",
+    "cancel": "취소",
+    "delete": "삭제",
+    "edit": "편집",
+    "add": "추가",
+    "search": "검색",
+    "filter": "필터",
+    "export": "내보내기",
+    "actions": "작업",
+    "status": "상태",
+    "date": "날짜",
+    "total": "총계",
+    "signOut": "로그아웃",
+    "comingSoon": "곧 출시"
+  }
+}

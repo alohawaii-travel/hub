@@ -1,0 +1,73 @@
+{
+  "auth": {
+    "signIn": "サインイン",
+    "signOut": "サインアウト",
+    "signInWithGoogle": "Googleでサインイン",
+    "welcome": "アロハワイハブへようこそ",
+    "accessDenied": "アクセス拒否",
+    "unauthorizedDomain": "お客様のメールドメインはこのシステムへのアクセス権限がありません。",
+    "loading": "リダイレクト中..."
+  },
+  "navigation": {
+    "dashboard": "ダッシュボード",
+    "tours": "ツアー",
+    "bookings": "予約",
+    "customers": "顧客",
+    "settings": "設定",
+    "reports": "レポート"
+  },
+  "dashboard": {
+    "title": "スタッフダッシュボード",
+    "subtitle": "ツアー、予約、顧客関係の管理",
+    "quickStats": "クイック統計",
+    "recentActivity": "最近のアクティビティ",
+    "upcomingTours": "今後のツアー",
+    "pendingBookings": "保留中の予約",
+    "userManagement": "ユーザー管理",
+    "manageStaffAccess": "スタッフアクセス管理",
+    "reports": "レポート",
+    "viewAnalytics": "分析表示"
+  },
+  "tours": {
+    "title": "ツアー管理",
+    "addTour": "新しいツアーを追加",
+    "addNewTour": "新しいツアーを追加",
+    "createTourPackage": "ツアーパッケージを作成",
+    "editTour": "ツアーを編集",
+    "deleteTour": "ツアーを削除",
+    "tourName": "ツアー名",
+    "description": "説明",
+    "price": "価格",
+    "duration": "所要時間",
+    "capacity": "定員",
+    "status": "ステータス"
+  },
+  "bookings": {
+    "title": "予約管理",
+    "newBooking": "新しい予約",
+    "viewBookings": "予約を表示",
+    "checkRecentReservations": "最近の予約を確認",
+    "confirmed": "確認済み",
+    "pending": "保留中",
+    "cancelled": "キャンセル済み",
+    "customerName": "顧客名",
+    "tourDate": "ツアー日",
+    "participants": "参加者",
+    "totalAmount": "合計金額"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "save": "保存",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "edit": "編集",
+    "add": "追加",
+    "search": "検索",
+    "filter": "フィルター",
+    "export": "エクスポート",
+    "actions": "アクション",
+    "status": "ステータス",
+    "date": "日付",
+    "total": "合計"
+  }
+}
