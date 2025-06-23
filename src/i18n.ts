@@ -8,6 +8,6 @@ export default getRequestConfig(async () => {
   return {
     locale,
     timeZone: "Pacific/Honolulu", // Hawaii timezone for AlohaWaii
-    messages: (await import(`../messages/${locale}.json`)).default,
+    messages: (await import(`../locales/${locale}.json`)).default,
   };
 });

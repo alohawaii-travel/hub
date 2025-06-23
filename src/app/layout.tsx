@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 // Load default English messages
 async function getMessages() {
   try {
-    const messages = (await import("../../messages/en.json")).default;
+    const messages = (await import("../../locales/en.json")).default;
     return messages;
   } catch (error) {
     console.error("Failed to load default messages:", error);
