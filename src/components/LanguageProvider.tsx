@@ -93,9 +93,9 @@ export function LanguageProvider({
     localStorage.setItem("language", lang);
     await loadMessages(lang);
 
-    // NEVER call API unless we're absolutely sure the user is authenticated
-    if (status === "authenticated" && session?.user?.email) {
-      console.log(`✅ User is authenticated, attempting to save to profile...`);
+    // ONLY save to profile if user is definitely authenticated and has an email
+    if (status === "authenticated" && session?.user?.email && session.user.email.trim() !== "") {
+      console.log(`✅ User is authenticated with email: ${session.user.email}, saving to profile...`);
       try {
         const result = await apiClient.updateCurrentUser({ language: lang });
         if (result.success) {
@@ -108,7 +108,7 @@ export function LanguageProvider({
         // Don't throw error - language switching should still work locally
       }
     } else {
-      console.log(`💾 Language preference saved locally only: ${lang} (status: ${status})`);
+      console.log(`💾 Language preference saved locally only: ${lang} (status: ${status}, email: ${session?.user?.email || 'none'})`);
     }
   };
 
