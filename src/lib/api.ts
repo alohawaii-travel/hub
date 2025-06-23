@@ -39,11 +39,15 @@ class APIClient {
     options: RequestInit = {}
   ): Promise<APIResponse<T>> {
     try {
+      console.log(`🔍 API Request: ${endpoint}`);
+      
       // Get session for authentication
       const session = await getSession();
+      console.log(`📊 Session status:`, session ? "exists" : "null");
 
       // For internal endpoints, require authentication
       if (endpoint.startsWith("/api/internal") && !session?.user?.email) {
+        console.log(`🚫 Authentication required for internal endpoint: ${endpoint}`);
         return {
           success: false,
           error: "Authentication required for internal endpoints",
@@ -51,6 +55,8 @@ class APIClient {
       }
 
       const url = `${this.baseUrl}${endpoint}`;
+      console.log(`🌐 Making request to: ${url}`);
+      
       const config: RequestInit = {
         headers: {
           "Content-Type": "application/json",
@@ -62,10 +68,18 @@ class APIClient {
         ...options,
       };
 
+      console.log(`📤 Request config:`, {
+        method: config.method || 'GET',
+        headers: config.headers,
+        hasBody: !!config.body
+      });
+
       const response = await fetch(url, config);
+      console.log(`📥 Response status:`, response.status, response.statusText);
 
       // Check if response is a redirect to signin (indicates not authenticated)
       if (response.url && response.url.includes("/api/auth/signin")) {
+        console.log(`🔄 Redirected to signin: ${response.url}`);
         return {
           success: false,
           error: "Authentication required - redirected to signin",
@@ -73,17 +87,23 @@ class APIClient {
       }
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        console.error(`❌ HTTP error! status: ${response.status}, body: ${errorText}`);
+        throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
       }
 
       const data = await response.json();
+      console.log(`✅ Request successful:`, data);
 
       return {
         success: true,
         data,
       };
     } catch (error) {
-      console.error("API request failed:", error);
+      console.error("❌ API request failed:", error);
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        console.error("🌐 Network error - could be a connection issue or CORS problem");
+      }
       return {
         success: false,
         error:

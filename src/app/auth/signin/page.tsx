@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn, getSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -10,15 +10,15 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const t = useTranslations();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    // Check if user is already signed in
-    getSession().then((session) => {
-      if (session) {
-        router.push("/dashboard");
-      }
-    });
-  }, [router]);
+    // Check if user is already signed in using useSession hook instead of getSession()
+    if (status === "authenticated" && session) {
+      console.log("User already authenticated, redirecting to dashboard");
+      router.push("/dashboard");
+    }
+  }, [session, status, router]);
 
   const handleGoogleSignIn = async () => {
     setLoading(true);

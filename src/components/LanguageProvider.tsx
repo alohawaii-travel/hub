@@ -93,36 +93,38 @@ export function LanguageProvider({
     localStorage.setItem("language", lang);
     await loadMessages(lang);
 
-    // ABSOLUTELY NO API CALLS unless user is authenticated with a valid session
-    // This prevents any network requests that could cause "Failed to fetch" errors
-    if (
-      status === "authenticated" && 
-      session?.user?.email && 
-      session.user.email.trim() !== "" &&
-      session.expires && 
-      new Date(session.expires) > new Date()
-    ) {
-      console.log(`✅ User is fully authenticated, saving language to profile...`);
-      
-      // Wrap in additional try-catch to prevent any network errors from bubbling up
+    // DEBUGGING: Let's see exactly what's happening
+    console.log(`🔍 Debug info:`);
+    console.log(`   Status === "authenticated": ${status === "authenticated"}`);
+    console.log(`   session?.user?.email exists: ${!!session?.user?.email}`);
+    console.log(`   Email not empty: ${session?.user?.email ? session.user.email.trim() !== "" : false}`);
+    console.log(`   Session expires: ${session?.expires}`);
+    console.log(`   Expires is future: ${session?.expires ? new Date(session.expires) > new Date() : false}`);
+
+    // Check if we should call the API to save language preference
+    const shouldCallAPI = status === "authenticated" && 
+                          session?.user?.email && 
+                          session.user.email.trim() !== "" &&
+                          session?.expires &&
+                          new Date(session.expires) > new Date();
+    
+    if (shouldCallAPI) {
+      console.log(`💾 Saving language preference to user profile: ${lang}`);
       try {
         const result = await apiClient.updateCurrentUser({ language: lang });
-        
-        if (result && result.success) {
-          console.log(`✅ Language preference saved to profile: ${lang}`);
+        if (result.success) {
+          console.log(`✅ Language preference saved successfully`);
         } else {
-          console.warn(`⚠️ API returned error:`, result?.error || 'Unknown error');
+          console.warn(`⚠️ Failed to save language preference:`, result.error);
+          // Continue anyway - we still have local storage
         }
       } catch (error) {
-        console.warn("⚠️ Failed to save language preference to user profile:", error);
-        // Absolutely do not throw or propagate this error
-        // Language switching should always work locally
+        console.error(`❌ Error saving language preference:`, error);
+        // Continue anyway - we still have local storage
       }
     } else {
       console.log(`💾 Language saved locally only: ${lang}`);
-      console.log(`   Status: ${status}`);
-      console.log(`   Email: ${session?.user?.email || 'none'}`);
-      console.log(`   Expires: ${session?.expires || 'none'}`);
+      console.log(`   Reason: ${!shouldCallAPI ? 'No valid authentication' : 'API calls disabled'}`);
     }
   };
 
