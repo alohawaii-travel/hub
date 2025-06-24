@@ -1,12 +1,19 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { LoadingPage } from "@/components/LoadingSpinner";
-import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { Layout } from "@/components/Layout";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { BarChart3, Calendar, MapPin, Users } from "lucide-react";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();
@@ -30,206 +37,160 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                🌺 {t("dashboard.title")}
-              </h1>
-              <p className="text-sm text-gray-600">{t("dashboard.subtitle")}</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <LanguageSwitcher />
-              <div className="flex items-center space-x-2">
-                {session.user?.image && (
-                  <Image
-                    src={session.user.image}
-                    alt="Profile"
-                    width={32}
-                    height={32}
-                    className="h-8 w-8 rounded-full"
-                  />
-                )}
-                <span className="text-sm text-gray-700">
-                  {session.user?.name}
-                </span>
+    <Layout>
+      <div className="space-y-6">
+        {/* Welcome Section */}
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            🌺 {t("dashboard.title")}
+          </h1>
+          <p className="text-muted-foreground">{t("dashboard.subtitle")}</p>
+        </div>
+
+        {/* Stats Cards */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {t("tours.total")}
+              </CardTitle>
+              <MapPin className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">12</div>
+              <p className="text-xs text-muted-foreground">
+                +2 from last month
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {t("bookings.active")}
+              </CardTitle>
+              <Calendar className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">45</div>
+              <p className="text-xs text-muted-foreground">
+                +12% from last week
+              </p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">
+                {t("customers.total")}
+              </CardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">234</div>
+              <p className="text-xs text-muted-foreground">+18 new customers</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Revenue</CardTitle>
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">$12,345</div>
+              <p className="text-xs text-muted-foreground">
+                +8% from last month
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <Card className="col-span-4">
+            <CardHeader>
+              <CardTitle>{t("dashboard.recentBookings")}</CardTitle>
+              <CardDescription>
+                {t("dashboard.recentBookingsDesc")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <p className="font-medium">
+                      Pearl Harbor & Circle Island Tour
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      John Smith - 2 guests
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">$299</p>
+                    <p className="text-sm text-muted-foreground">Tomorrow</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <p className="font-medium">Hanauma Bay Snorkeling</p>
+                    <p className="text-sm text-muted-foreground">
+                      Jane Doe - 4 guests
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">$180</p>
+                    <p className="text-sm text-muted-foreground">Dec 26</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 border rounded-lg">
+                  <div>
+                    <p className="font-medium">Diamond Head Sunrise Hike</p>
+                    <p className="text-sm text-muted-foreground">
+                      Mike Johnson - 2 guests
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-medium">$120</p>
+                    <p className="text-sm text-muted-foreground">Dec 27</p>
+                  </div>
+                </div>
               </div>
-              <button
-                onClick={() => signOut({ callbackUrl: "/auth/signin" })}
-                className="bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                {t("common.signOut")}
+            </CardContent>
+          </Card>
+
+          <Card className="col-span-3">
+            <CardHeader>
+              <CardTitle>{t("dashboard.quickActions")}</CardTitle>
+              <CardDescription>
+                {t("dashboard.quickActionsDesc")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <button className="w-full bg-blue-50 border border-blue-200 rounded-md p-3 text-left hover:bg-blue-100 transition-colors">
+                <div className="text-blue-600 font-medium text-sm">
+                  {t("tours.addNewTour")}
+                </div>
               </button>
-            </div>
-          </div>
+              <button className="w-full bg-green-50 border border-green-200 rounded-md p-3 text-left hover:bg-green-100 transition-colors">
+                <div className="text-green-600 font-medium text-sm">
+                  {t("bookings.viewBookings")}
+                </div>
+              </button>
+              <button className="w-full bg-yellow-50 border border-yellow-200 rounded-md p-3 text-left hover:bg-yellow-100 transition-colors">
+                <div className="text-yellow-600 font-medium text-sm">
+                  {t("dashboard.userManagement")}
+                </div>
+              </button>
+              <button className="w-full bg-purple-50 border border-purple-200 rounded-md p-3 text-left hover:bg-purple-100 transition-colors">
+                <div className="text-purple-600 font-medium text-sm">
+                  {t("dashboard.reports")}
+                </div>
+              </button>
+            </CardContent>
+          </Card>
         </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Welcome Card */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        {t("dashboard.welcomeBack")}
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        {session.user?.name}
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Tours Management */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                        />
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        {t("tours.management")}
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        {t("common.comingSoon")}
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Reservations */}
-            <div className="bg-white overflow-hidden shadow rounded-lg">
-              <div className="p-5">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0">
-                    <div className="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                  <div className="ml-5 w-0 flex-1">
-                    <dl>
-                      <dt className="text-sm font-medium text-gray-500 truncate">
-                        {t("bookings.reservations")}
-                      </dt>
-                      <dd className="text-lg font-medium text-gray-900">
-                        {t("common.comingSoon")}
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mt-8">
-            <div className="bg-white shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900 mb-4">
-                  {t("dashboard.quickActions")}
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <button className="bg-blue-50 border border-blue-200 rounded-md p-4 text-left hover:bg-blue-100 transition-colors">
-                    <div className="text-blue-600 font-medium">
-                      {t("tours.addNewTour")}
-                    </div>
-                    <div className="text-sm text-blue-500">
-                      {t("tours.createTourPackage")}
-                    </div>
-                  </button>
-                  <button className="bg-green-50 border border-green-200 rounded-md p-4 text-left hover:bg-green-100 transition-colors">
-                    <div className="text-green-600 font-medium">
-                      {t("bookings.viewBookings")}
-                    </div>
-                    <div className="text-sm text-green-500">
-                      {t("bookings.checkRecentReservations")}
-                    </div>
-                  </button>
-                  <button className="bg-yellow-50 border border-yellow-200 rounded-md p-4 text-left hover:bg-yellow-100 transition-colors">
-                    <div className="text-yellow-600 font-medium">
-                      {t("dashboard.userManagement")}
-                    </div>
-                    <div className="text-sm text-yellow-500">
-                      {t("dashboard.manageStaffAccess")}
-                    </div>
-                  </button>
-                  <button className="bg-purple-50 border border-purple-200 rounded-md p-4 text-left hover:bg-purple-100 transition-colors">
-                    <div className="text-purple-600 font-medium">
-                      {t("dashboard.reports")}
-                    </div>
-                    <div className="text-sm text-purple-500">
-                      {t("dashboard.viewAnalytics")}
-                    </div>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </Layout>
   );
 }

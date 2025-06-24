@@ -24,8 +24,11 @@
     "subtitle": "Manage tours, bookings, and customer relationships",
     "welcomeBack": "Welcome Back",
     "quickActions": "Quick Actions",
+    "quickActionsDesc": "Common tasks to get you started",
     "quickStats": "Quick Statistics",
     "recentActivity": "Recent Activity",
+    "recentBookings": "Recent Bookings",
+    "recentBookingsDesc": "Latest reservations from customers",
     "upcomingTours": "Upcoming Tours",
     "pendingBookings": "Pending Bookings",
     "userManagement": "User Management",
@@ -36,6 +39,7 @@
   "tours": {
     "title": "Tour Management",
     "management": "Tours Management",
+    "total": "Total Tours",
     "addTour": "Add New Tour",
     "addNewTour": "Add New Tour",
     "createTourPackage": "Create Tour Package",
@@ -51,6 +55,7 @@
   "bookings": {
     "title": "Booking Management",
     "reservations": "Reservations",
+    "active": "Active Bookings",
     "newBooking": "New Booking",
     "viewBookings": "View Bookings",
     "checkRecentReservations": "Check Recent Reservations",
@@ -61,6 +66,10 @@
     "tourDate": "Tour Date",
     "participants": "Participants",
     "totalAmount": "Total Amount"
+  },
+  "customers": {
+    "title": "Customer Management",
+    "total": "Total Customers"
   },
   "common": {
     "loading": "Loading...",
