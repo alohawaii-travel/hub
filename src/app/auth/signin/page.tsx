@@ -4,6 +4,7 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
 export default function SignIn() {
@@ -39,12 +40,15 @@ export default function SignIn() {
 
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-gray-900">
-            {t("auth.staffHubLogin")}
-          </h2>
-          <p className="mt-2 text-sm text-gray-600">
-            {t("auth.signInWithGoogle")}
-          </p>
+          <Image
+            src="/logo-lg.png"
+            alt="AlohaWaii Logo"
+            width={600}
+            height={102}
+            className="mx-auto h-16 w-auto"
+            priority
+            unoptimized
+          />
         </div>
       </div>
 
