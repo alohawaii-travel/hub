@@ -9,7 +9,16 @@
     "welcome": "Welcome to AlohaWaii Hub",
     "accessDenied": "Access Denied",
     "unauthorizedDomain": "Your email domain is not authorized to access this system.",
-    "loading": "Redirecting..."
+    "loading": "Redirecting...",
+    "pending": {
+      "title": "Account Pending Approval",
+      "adminApprovalRequired": "Administrator Approval Required",
+      "accountCreated": "Your account has been created but requires administrator approval before you can access the system.",
+      "contactAdmin": "Please contact your administrator to activate your account.",
+      "autoSignOut": "You will be automatically signed out in a few seconds.",
+      "signOutNow": "Sign Out Now",
+      "errorContact": "If you believe this is an error, please contact your system administrator."
+    }
   },
   "navigation": {
     "dashboard": "Dashboard",

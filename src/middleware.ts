@@ -1,12 +1,24 @@
 import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
 export default withAuth(
-  // `withAuth` augments your `Request` with the user's token.
   function middleware(req) {
-    // Additional middleware logic can go here
-    console.log("Middleware running for:", req.nextUrl.pathname);
+    const token = req.nextauth.token;
 
-    return;
+    // If user is pending and not already on pending page, redirect
+    if (token?.isPending && !req.nextUrl.pathname.startsWith("/auth/pending")) {
+      console.log("Redirecting pending user to pending page");
+      return NextResponse.redirect(new URL("/auth/pending", req.url));
+    }
+
+    // If user is not pending and on pending page, redirect to home
+    if (!token?.isPending && req.nextUrl.pathname.startsWith("/auth/pending")) {
+      console.log("Redirecting non-pending user away from pending page");
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    console.log("Middleware running for:", req.nextUrl.pathname);
+    return NextResponse.next();
   },
   {
     callbacks: {
@@ -19,9 +31,8 @@ export default withAuth(
         // Check if user has a valid token for protected routes
         if (!token) return false;
 
-        // Additional authorization logic can go here
-        // For example, role-based access control
-
+        // Allow access for all authenticated users (including pending)
+        // The middleware function above will handle pending user redirects
         return true;
       },
     },
@@ -37,8 +48,9 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * And exclude common static file extensions
+     * - auth/signin (sign-in page only, not pending page)
+     * - logo files and other static assets
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|logo).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|auth/signin|logo-|.*\\.png|.*\\.svg|.*\\.jpg|.*\\.jpeg).*)",
   ],
 };

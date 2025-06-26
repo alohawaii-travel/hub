@@ -2,30 +2,49 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
 
-// Call the API to register the user
-async function registerUserInApi(user: { email: string; name?: string | null; image?: string | null }) {
+// Call the API to authenticate and check user status
+async function authenticateUserWithApi(user: {
+  email: string;
+  name?: string | null;
+  image?: string | null;
+}) {
   try {
-    const response = await fetch(`${process.env.API_URL || 'http://localhost:4000'}/api/external/auth/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-API-Key': process.env.HUB_API_KEY || '',
-      },
-      body: JSON.stringify({
-        email: user.email,
-        name: user.name,
-        image: user.image,
-        provider: 'google',
-      }),
-    });
-    
+    const response = await fetch(
+      `${
+        process.env.API_URL || "http://localhost:4000"
+      }/api/internal/users/auth`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": process.env.HUB_API_KEY || "",
+        },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.name,
+          image: user.image,
+          provider: "google",
+        }),
+      }
+    );
+
+    const result = await response.json();
+
     if (!response.ok) {
-      console.error('Failed to register user in API:', await response.text());
+      console.error("User authentication failed:", result.error);
+      return {
+        success: false,
+        error: result.error,
+        statusCode: response.status,
+        isPending:
+          response.status === 403 && result.error?.includes("pending approval"),
+      };
     }
-    return await response.json();
+
+    return { success: true, user: result.user };
   } catch (error) {
-    console.error('Error registering user in API:', error);
-    return null;
+    console.error("Error authenticating user with API:", error);
+    return { success: false, error: "Authentication service unavailable" };
   }
 }
 
@@ -38,33 +57,60 @@ const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user }) {
-      // Domain whitelisting - only allow specific email domains
-      const allowedDomains = process.env.ALLOWED_DOMAINS?.split(",") || [];
-
       if (user.email) {
-        const emailDomain = user.email.split("@")[1];
-        if (
-          allowedDomains.length > 0 &&
-          !allowedDomains.includes(emailDomain)
-        ) {
-          return false; // Reject sign in for non-whitelisted domains
-        }
-
-        // Register or update user in the API database
-        await registerUserInApi({
+        // Authenticate user with API and check their status
+        const authResult = await authenticateUserWithApi({
           email: user.email || "",
           name: user.name,
           image: user.image,
         });
+
+        if (!authResult.success) {
+          // Log the specific error for debugging
+          console.error(
+            `Sign-in rejected for ${user.email}:`,
+            authResult.error
+          );
+
+          // If user is pending, allow sign-in but mark for redirect
+          if (authResult.isPending) {
+            console.log(
+              `User ${user.email} has pending status - allowing sign-in for redirect`
+            );
+            return true; // Allow sign-in so we can redirect to pending page
+          }
+
+          // For other errors, block sign-in completely
+          return false;
+        }
+
+        console.log(
+          `Sign-in approved for ${user.email} with role ${authResult.user?.role}`
+        );
+        return true;
       }
 
-      return true;
-    },
-    async session({ session }) {
-      return session;
+      return false; // No email provided
     },
     async jwt({ token }) {
+      // Always check user status with API to get latest role/status
+      if (token.email) {
+        const authResult = await authenticateUserWithApi({
+          email: token.email as string,
+          name: token.name as string,
+          image: token.picture as string,
+        });
+
+        token.isPending = !authResult.success && authResult.isPending;
+        token.userRole = authResult.user?.role || token.userRole;
+      }
       return token;
+    },
+    async session({ session, token }) {
+      // Add user status to session
+      session.user.isPending = token.isPending as boolean;
+      session.user.role = token.userRole as string;
+      return session;
     },
   },
   pages: {

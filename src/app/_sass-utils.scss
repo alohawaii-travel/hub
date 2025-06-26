@@ -1,0 +1,214 @@
+// Sass Variables for Alohawaii project
+$radius-base: 0.625rem;
+$animation-duration: 0.3s;
+$transition-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+// Spacing Variables
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 1.5rem;
+$spacing-xl: 2rem;
+$spacing-2xl: 3rem;
+
+// Border Radius Variables
+$border-radius: $radius-base;
+$border-radius-sm: calc(#{$radius-base} - 4px);
+$border-radius-md: calc(#{$radius-base} - 2px);
+$border-radius-lg: $radius-base;
+$border-radius-xl: calc(#{$radius-base} + 4px);
+
+// Color Variables (can be overridden by CSS custom properties)
+$primary-color: #3b82f6;
+$secondary-color: #64748b;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$error-color: #ef4444;
+
+// Breakpoints
+$breakpoints: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  2xl: 1536px,
+);
+
+// Sass Mixins
+@mixin smooth-transition($property: all, $duration: $animation-duration) {
+  transition: #{$property} #{$duration} #{$transition-ease};
+}
+
+@mixin focus-ring($color: var(--ring, #{$primary-color})) {
+  &:focus-visible {
+    outline: 2px solid #{$color};
+    outline-offset: 2px;
+  }
+}
+
+@mixin dark-mode {
+  @media (prefers-color-scheme: dark) {
+    @content;
+  }
+}
+
+@mixin media-breakpoint($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    @media (min-width: map-get($breakpoints, $breakpoint)) {
+      @content;
+    }
+  }
+
+  @else {
+    @warn "Unknown breakpoint: #{$breakpoint}";
+  }
+}
+
+@mixin hover-lift($lift: 2px) {
+  @include smooth-transition(transform);
+
+  &:hover {
+    transform: translateY(-#{$lift});
+  }
+}
+
+@mixin card-shadow($level: 1) {
+  @if $level ==1 {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+  @else if $level ==2 {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12), 0 2px 4px rgba(0, 0, 0, 0.08);
+  }
+
+  @else if $level ==3 {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.12), 0 4px 6px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// Custom utility classes using Sass
+.alohawaii-btn {
+  @include smooth-transition();
+  @include focus-ring();
+  @include hover-lift(1px);
+
+  border-radius: calc(#{$radius-base} - 2px);
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+
+  &--primary {
+    background-color: $primary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &--secondary {
+    background-color: $secondary-color;
+    color: white;
+
+    &:hover {
+      background-color: darken($secondary-color, 10%);
+    }
+  }
+}
+
+.alohawaii-card {
+  @include card-shadow(1);
+  @include smooth-transition(box-shadow);
+
+  border-radius: $radius-base;
+  padding: 1.5rem;
+  background-color: var(--card, white);
+
+  &:hover {
+    @include card-shadow(2);
+  }
+
+  &--elevated {
+    @include card-shadow(2);
+
+    &:hover {
+      @include card-shadow(3);
+    }
+  }
+}
+
+.alohawaii-container {
+  max-width: map-get($breakpoints, xl);
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @include media-breakpoint(sm) {
+    padding: 0 1.5rem;
+  }
+
+  @include media-breakpoint(lg) {
+    padding: 0 2rem;
+  }
+}
+
+// Responsive grid system
+.alohawaii-grid {
+  display: grid;
+  gap: 1rem;
+
+  &--cols-1 {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  &--cols-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  &--cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &--cols-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include media-breakpoint(md) {
+    gap: 1.5rem;
+  }
+
+  @include media-breakpoint(lg) {
+    gap: 2rem;
+  }
+}
+
+// Animation keyframes
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.alohawaii-fade-in {
+  animation: fadeIn #{$animation-duration} #{$transition-ease};
+}
+
+.alohawaii-pulse {
+  animation: pulse 2s #{$transition-ease} infinite;
+}

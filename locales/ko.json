@@ -9,7 +9,16 @@
     "welcome": "알로하와이 허브에 오신 것을 환영합니다",
     "accessDenied": "접근 거부",
     "unauthorizedDomain": "귀하의 이메일 도메인은 이 시스템에 접근할 권한이 없습니다.",
-    "loading": "리다이렉트 중..."
+    "loading": "리다이렉트 중...",
+    "pending": {
+      "title": "계정 승인 대기",
+      "adminApprovalRequired": "관리자 승인이 필요합니다",
+      "accountCreated": "계정이 생성되었지만 시스템에 접근하기 전에 관리자 승인이 필요합니다.",
+      "contactAdmin": "계정을 활성화하려면 관리자에게 문의하세요.",
+      "autoSignOut": "몇 초 후 자동으로 로그아웃됩니다.",
+      "signOutNow": "지금 로그아웃",
+      "errorContact": "이것이 오류라고 생각되시면 시스템 관리자에게 문의하세요."
+    }
   },
   "navigation": {
     "dashboard": "대시보드",

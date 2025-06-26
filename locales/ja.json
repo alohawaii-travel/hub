@@ -9,7 +9,16 @@
     "welcome": "アロハハワイハブへようこそ",
     "accessDenied": "アクセス拒否",
     "unauthorizedDomain": "あなたのメールドメインにはこのシステムへのアクセス権がありません。",
-    "loading": "リダイレクト中..."
+    "loading": "リダイレクト中...",
+    "pending": {
+      "title": "アカウント承認待ち",
+      "adminApprovalRequired": "管理者の承認が必要です",
+      "accountCreated": "アカウントは作成されましたが、システムにアクセスする前に管理者の承認が必要です。",
+      "contactAdmin": "アカウントを有効にするには管理者に連絡してください。",
+      "autoSignOut": "数秒後に自動的にログアウトされます。",
+      "signOutNow": "今すぐログアウト",
+      "errorContact": "これがエラーだと思われる場合は、システム管理者に連絡してください。"
+    }
   },
   "navigation": {
     "dashboard": "ダッシュボード",
